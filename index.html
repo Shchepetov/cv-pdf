@@ -1,1 +1,365 @@
-<iframe src="document.pdf" style="width:100%;height:100vh;border:0"></iframe>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Alexander Shchepetov — Senior Smart Contract Engineer &amp; Security Researcher</title>
+<meta name="description" content="CV — Alexander Shchepetov, Senior Smart Contract Engineer, Protocol Architect, Security Researcher">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================
+     DESIGN TOKENS — ATS-optimized
+     - Single column, single sans-serif font
+     - Standard section names (Summary / Skills / Experience / Education)
+     - No decorative elements that confuse parsers
+     ========================================================= */
+  :root {
+    --text:        #111111;
+    --text-soft:   #2a2a2a;
+    --muted:       #555555;
+    --rule:        #1a1a1a;
+    --bg:          #ffffff;
+    --bg-page:     #ececec;
+
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+            Helvetica, Arial, sans-serif;
+
+    --fs-base:    10.5pt;
+    --fs-small:   9.5pt;
+    --fs-name:    20pt;
+    --fs-section: 11pt;
+    --fs-role:    11pt;
+
+    --leading:    1.45;
+  }
+
+  /* RESET + BASE */
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg-page);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: var(--fs-base);
+    line-height: var(--leading);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; text-decoration: none; }
+  p { margin: 0 0 4px; }
+  ul { margin: 0; padding: 0; list-style: none; }
+  strong { font-weight: 600; }
+
+  /* Prevents hyphenated compounds from breaking across lines (preserves word integrity in PDF text extraction). */
+  .nb { white-space: nowrap; }
+
+  /* PAGE FRAME (A4) */
+  @page { size: A4; margin: 0; }
+
+  @media screen {
+    body { padding: 24px 0; }
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      padding: 14mm 16mm 14mm;
+      background: var(--bg);
+      box-shadow: 0 4px 24px rgba(0,0,0,.08);
+    }
+  }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .page {
+      background: transparent;
+      box-shadow: none;
+      padding: 0;
+      margin: 0;
+      min-height: auto;
+      width: auto;
+    }
+  }
+
+  /* HEADER */
+  .name {
+    font-size: var(--fs-name);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-align: center;
+    margin: 0 0 6px;
+  }
+  .contact {
+    text-align: center;
+    font-size: var(--fs-small);
+    color: var(--text-soft);
+    margin: 0 0 3px;
+    line-height: 1.5;
+  }
+  .contact:last-of-type {
+    margin-bottom: 0;
+  }
+  .contact.title-line {
+    margin-bottom: 8px;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .contact .muted { color: var(--muted); }
+
+  /* SECTIONS */
+  .section { margin-top: 14px; }
+  .section-header {
+    font-size: var(--fs-section);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-align: center;
+    margin: 0 0 8px;
+    padding-bottom: 4px;
+    border-bottom: 1.2px solid var(--rule);
+  }
+
+  /* ROLES */
+  .role { margin-top: 8px; }
+  .role:first-of-type { margin-top: 2px; }
+
+  .role-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 0;
+  }
+  .role-company {
+    font-weight: 700;
+    font-size: var(--fs-role);
+  }
+  .role-company .meta {
+    font-weight: 400;
+    color: var(--muted);
+    font-size: 10pt;
+  }
+  .role-dates {
+    font-size: 10pt;
+    color: var(--text-soft);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .role-title {
+    font-size: 10pt;
+    font-style: italic;
+    color: var(--text-soft);
+    margin: 0 0 3px;
+  }
+
+  /* Bullets use native list markers. Do not switch to position:relative +
+     absolute ::before: positioned elements are painted last and end up at the
+     end of the PDF text layer (see CANON note above). */
+  ul.bullets { margin-top: 2px; padding-left: 14px; list-style: disc outside; }
+  ul.bullets li { margin-bottom: 2px; padding-left: 0; break-inside: avoid; }
+  ul.bullets li::marker { font-size: 0.9em; }
+
+  /* Unfilled placeholder: impossible to miss on screen and in print. */
+  .todo { background: #ffe066; padding: 0 2px; }
+
+  /* SKILLS / SUMMARY */
+  .skills p { margin-bottom: 3px; }
+  .skills strong { font-weight: 700; }
+  .summary p { margin-bottom: 5px; }
+
+  /* Compact education row: institution — degree | years on a single line */
+  .edu { margin-top: 6px; }
+  .edu-line { margin: 0 0 1px; font-size: var(--fs-role); }
+  .edu-line strong { font-weight: 700; }
+
+  /* PRINT REFINEMENTS */
+  @media print {
+    .section-header { break-after: avoid; }
+    .role-header { break-after: avoid; }
+    .role-title { break-after: avoid; }
+    .bullets { orphans: 2; widows: 2; }
+    a { color: var(--text); }
+    /* Underline company/institution names for visual anchoring (matches classic CV style) */
+    .role-company a,
+    .edu-line a {
+      text-decoration: underline;
+      text-decoration-thickness: 0.5px;
+      text-underline-offset: 2px;
+    }
+  }
+
+  /* PRINT — comfortable sizing; break only between roles, never inside one */
+  @media print {
+    :root {
+      --fs-base:    10pt;
+      --fs-small:   9.2pt;
+      --fs-name:    19pt;
+      --fs-section: 10.5pt;
+      --fs-role:    10.5pt;
+      --leading:    1.38;
+    }
+    .section { margin-top: 11px; }
+    .section-header { margin-bottom: 7px; padding-bottom: 3px; }
+    .role { margin-top: 7px; break-inside: avoid; page-break-inside: avoid; }
+    .role:first-of-type { margin-top: 2px; }
+    ul.bullets li { margin-bottom: 2px; }
+    .summary p, .skills p { margin-bottom: 3px; }
+    /* keep each experience entry and education entry intact across the page break */
+    .experience .role, .education .role { break-inside: avoid; page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<article class="page">
+
+  <!-- ========== HEADER ========== -->
+  <header>
+    <h1 class="name">Alexander Shchepetov</h1>
+    <p class="contact title-line">Senior Smart Contract Engineer &amp; Protocol Architect &nbsp;·&nbsp; Security Researcher</p>
+    <p class="contact">
+      Remote &nbsp;·&nbsp; GMT+3
+      &nbsp;·&nbsp;
+      <a href="mailto:0xshchepetov@gmail.com">0xshchepetov@gmail.com</a>
+      &nbsp;·&nbsp;
+      <a href="https://t.me/apetov">t.me/apetov</a>
+    </p>
+    <p class="contact">
+      <a href="https://www.linkedin.com/in/apetov/">linkedin.com/in/apetov</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/Shchepetov">github.com/Shchepetov</a>
+      &nbsp;·&nbsp;
+      <a href="https://x.com/apetov_">x.com/apetov_</a>
+    </p>
+  </header>
+
+  <!-- ========== SUMMARY ========== -->
+  <section class="section summary">
+    <h2 class="section-header">Summary</h2>
+    <p>Senior smart contract engineer and protocol architect specialized in prediction markets and perps, with 7+ years in software and 4+ building DeFi. I take protocols from idea to production: architecture, mechanism design, contracts, and the off-chain systems around them. Most recently I was the sole smart contract engineer of Azuro, a prediction-market protocol with <strong>$440M+ in volume</strong>, <strong>$10M peak TVL</strong>, and <strong>zero production exploits</strong>, hardened through <strong>~15 external audits</strong>.</p>
+    <p>On the side I do independent security research, with <strong>4 confirmed Critical/High findings</strong> on live protocols via Immunefi in my first two months. AI coding agents are part of my daily workflow; I keep the architecture, the math, and anything security-critical in my own hands.</p>
+    <p>M.Sc. in Blockchain from <strong>Moscow Institute of Physics and Technology (MIPT)</strong>.</p>
+  </section>
+
+  <!-- ========== SKILLS ========== -->
+  <section class="section skills">
+    <h2 class="section-header">Skills</h2>
+    <p><strong>Smart Contracts:</strong> Solidity, Yul, EVM internals, Foundry, Hardhat, OpenZeppelin, Solady, proxy patterns, gas and storage optimization.</p>
+    <p><strong>Protocol Design:</strong> AMMs, staking, lending, <span class="nb">prediction markets</span>, tokenomics and incentive modeling, cross-chain deployment, ERC-4337, EIP-712, ERC-1271.</p>
+    <p><strong>Security:</strong> threat modeling, fuzz and invariant testing (Echidna, Medusa), internal audit, MEV-aware design, AI-assisted vulnerability research.</p>
+    <p><strong>Cryptography:</strong> Pedersen commitments, BN254 pairings, hash-to-curve, <span class="nb">zk-SNARKs</span>.</p>
+    <p><strong>Off-chain:</strong> Python, FastAPI, TypeScript, ethers.js, web3.py, The Graph, Dune Analytics, PostgreSQL.</p>
+  </section>
+
+  <!-- ========== EXPERIENCE ========== -->
+  <section class="section experience">
+    <h2 class="section-header">Experience</h2>
+
+    <!-- SECURITY RESEARCH -->
+    <div class="role">
+      <div class="role-header">
+        <span class="role-company">Independent Security Research</span>
+        <span class="role-dates">Jun 2026 – Present</span>
+      </div>
+      <p class="role-title">Smart Contract Security Researcher</p>
+      <ul class="bullets">
+        <li><strong>Hunt bugs</strong> in live DeFi protocols on Immunefi and in audit competitions, with 4 Critical/High findings confirmed so far.</li>
+        <li><strong>Built</strong> a multi-agent audit system for Immunefi programs that pulls in a program's scope, runs a fleet of specialized analysis agents across the code, and filters everything they surface through an adversarial validation gate to cut false positives before they reach me.</li>
+      </ul>
+    </div>
+
+    <!-- AZURO -->
+    <div class="role">
+      <div class="role-header">
+        <span class="role-company"><a href="https://azuro.org/">Azuro</a></span>
+        <span class="role-dates">Feb 2022 – Sep 2026</span>
+      </div>
+      <p class="role-title">Smart Contract Engineer &amp; Protocol Architect</p>
+      <ul class="bullets">
+        <li><strong>Joined</strong> as one of two core engineers and, as the team shrank, became its only smart contract engineer, owning on-chain architecture, mechanism design, and every security call.</li>
+        <li><strong>Kept</strong> the protocol exploit-free across <strong>$440M+ in volume</strong> and <strong>$10M peak TVL</strong>; it earned $4.5M+ in revenue over that period.</li>
+        <li><strong>Designed and built</strong> most of the core protocol together with the other engineer, including the prediction-market mechanics (odds, bookmaker positioning, settlement).</li>
+        <li><strong>Wrote and shipped</strong> the $AZUR (ERC-20) contracts to the team's tokenomics spec, covering vesting, several staking mechanisms, fee accrual to stakers, and long-term holder rewards.</li>
+        <li><strong>Validated</strong> new mechanisms with on-chain analysis (Dune) and historical backtesting before shipping, then tuned parameters against live metrics after launch.</li>
+        <li><strong>Ran</strong> internal review before each external engagement and worked findings directly with the auditors across ~15 audits (<span class="nb">Pashov Audit Group</span>, Hexens, Hacken, Pessimistic, and others).</li>
+        <li><strong>Built</strong> the off-chain stack around it too: FastAPI backends, The Graph subgraphs, Dune dashboards, user-behavior analysis, and risk-monitoring tooling.</li>
+      </ul>
+    </div>
+
+    <!-- TRENDLE -->
+    <div class="role">
+      <div class="role-header">
+        <span class="role-company"><a href="https://trendle.fi/">Trendle</a> <span class="meta">(part-time)</span></span>
+        <span class="role-dates">Jun 2025 – Apr 2026</span>
+      </div>
+      <p class="role-title">Smart Contract Engineer &amp; Protocol Architect</p>
+      <ul class="bullets">
+        <li><strong>Built</strong> the on-chain side of a perps protocol for trading cultural trends and memes. Designed and implemented the full perpetuals engine myself: leverage, funding rate, and liquidations, plus mechanism design, contracts, testing, and audit coordination.</li>
+      </ul>
+    </div>
+
+    <!-- STEALTH -->
+    <div class="role">
+      <div class="role-header">
+        <span class="role-company">Stealth DeFi Protocols <span class="meta">(part-time)</span></span>
+        <span class="role-dates">Jan 2026 – Apr 2026</span>
+      </div>
+      <p class="role-title">Smart Contract Engineer &amp; Protocol Architect · code and demos on request, under NDA</p>
+      <ul class="bullets">
+        <li><strong>Sole engineer</strong> on two DeFi protocols. One shipped to production with real users; the other was fully built but never launched.</li>
+        <li><strong>Designed</strong> a custom on-chain privacy scheme for a prediction market, built on Pedersen commitments over BN254. The bettor's chosen side never touches the chain, and resolve invariants make it impossible for the operator to forge payouts. No trusted setup, no off-chain proving system.</li>
+        <li><strong>Built</strong> a modular fixed-term lending protocol on an Aave-v3-style registry architecture (chosen over a monolithic core for upgrade safety), with intent/solver matching in the spirit of CoW Swap and 1inch Fusion for atomic <span class="nb">multi-source</span> funding, and pluggable yield strategies (Aave v3, Morpho Blue).</li>
+      </ul>
+    </div>
+
+    <!-- INTEL -->
+    <div class="role">
+      <div class="role-header">
+        <span class="role-company"><a href="https://www.intel.com/">Intel Corporation</a></span>
+        <span class="role-dates">Oct 2020 – Oct 2021</span>
+      </div>
+      <p class="role-title">QA Engineer — OpenVINO ML test infrastructure (Python, C++)</p>
+    </div>
+
+    <!-- POLITPROJECT -->
+    <div class="role">
+      <div class="role-header">
+        <span class="role-company"><a href="https://politproject.ru/">PolitProject</a></span>
+        <span class="role-dates">Aug 2019 – Oct 2020</span>
+      </div>
+      <p class="role-title">Backend Developer — Python, Django/FastAPI, PostgreSQL, Docker</p>
+    </div>
+
+  </section>
+
+  <!-- ========== EDUCATION ========== -->
+  <section class="section education">
+    <h2 class="section-header">Education</h2>
+
+    <div class="role edu">
+      <p class="edu-line">
+        <a href="https://www.mipt.ru/"><strong>Moscow Institute of Physics and Technology (MIPT)</strong></a> — Master's degree | Sep 2021 – Jul 2023
+      </p>
+      <p class="role-title">Blockchain Technologies, Applied Mathematics and Computer Science. Thesis: a working alternative mempool for <span class="nb">ERC-4337 Account Abstraction</span>, deployed spring 2023.</p>
+    </div>
+
+    <div class="role edu">
+      <p class="edu-line">
+        <a href="http://www.unn.ru/"><strong>State University of Nizhni Novgorod (UNN)</strong></a> — Bachelor's degree | Sep 2017 – Jul 2021
+      </p>
+      <p class="role-title">Information Systems for Business.</p>
+    </div>
+
+  </section>
+
+  <!-- ========== LANGUAGES ========== -->
+  <section class="section languages">
+    <h2 class="section-header">Languages</h2>
+    <p>English (B2), Russian (native).</p>
+  </section>
+
+</article>
+
+</body>
+</html>
